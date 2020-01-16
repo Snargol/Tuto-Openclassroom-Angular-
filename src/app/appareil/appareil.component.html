@@ -9,7 +9,10 @@
     *ngIf="appareilStatus==='allumé'"
     style="width: 20px;height: 20px;background-color: darkgreen;">
   </div>
-  <h4 [ngStyle]="{color: getColor()}">Appareil : {{ appareilName }} -- Statut : {{ appareilStatus }} </h4>
+  <div>
+    <h4 [ngStyle]="{color: getColor()}">Appareil : {{ appareilName }} -- Statut : {{ appareilStatus }} </h4>
+    <a [routerLink]="[id]">Détails</a>
+  </div>
   <input type="text" class="form-control" [(ngModel)]="appareilName">
   <button class="btn btn-success m-2" (click)="allumer()">Allumer</button>
   <button class="btn badge-danger m-2" (click)="eteindre()">Eteindre</button>
