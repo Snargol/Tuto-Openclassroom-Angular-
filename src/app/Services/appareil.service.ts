@@ -1,26 +1,40 @@
 import {Subject} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class AppareilService {
 
   appareilSubject = new Subject<any[]>();
 
-  private appareils = [
-    {
-      id: 1,
-      name: 'Four à microonde',
-      status: 'éteint'
-    },
-    {
-      id: 2,
-      name: 'Frigo',
-      status: 'allumé'
-    },
-    {
-      id: 3,
-      name: 'Ordinateur',
-      status: 'éteint'
-    }
-  ];
+  private appareils = [];
+
+  constructor(private httpClient: HttpClient) {
+
+  }
+
+  saveAppareilToServer() {
+    this.httpClient
+      .put('https://http-client-demo-16f41.firebaseio.com/appareils.json', this.appareils)
+      .subscribe(
+        () => {console.log('terminé'); },
+        (error) => {console.log('erreur' + error); }
+      );
+  }
+
+  getAppareilsFromServer() {
+    this.httpClient
+      .get<any[]>('https://httpclient-demo.firebaseio.com/appareils.json')
+      .subscribe(
+        (response) => {
+          this.appareils = response;
+          this.emitAppareilSubject();
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+  }
 
   ToutAllumer() {
     for (const app of this.appareils) {
